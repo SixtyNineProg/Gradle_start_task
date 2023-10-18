@@ -18,3 +18,5 @@ Task
 В модуле api должен быть class App с методом main.
 Из модуля api в методе main вызвать Utils.isAllPositiveNumbers("12", "79")
 Написать один unit test для проверки этого метода boolean isAllPositiveNumbers(String… str)(использовать JUnit 5).
+
+gradle wrapper --gradle-version 8.4

@@ -6,9 +6,14 @@ repositories {
     mavenCentral()
 }
 
+wrapper {
+    gradleVersion = '8.4'
+}
+
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
 }
 
 gradle.taskGraph.whenReady { TaskExecutionGraph graph ->
@@ -18,9 +23,15 @@ gradle.taskGraph.whenReady { TaskExecutionGraph graph ->
     }
 }
 
-def map = [description: "test_task", group: "klimov"]
-task(map, "hello") {
-    println "task: $description"
-    println "task: $group"
+tasks.named('test') {
+    useJUnitPlatform()
 }
 
+version = '1.0.0'
+
+tasks.named('jar') {
+    manifest {
+        attributes('Implementation-Title': project.name,
+                'Implementation-Version': project.version)
+    }
+}

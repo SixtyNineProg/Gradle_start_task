@@ -11,6 +11,13 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 }
 
+gradle.taskGraph.whenReady { TaskExecutionGraph graph ->
+    println "----------- Graph:"
+    graph.allTasks.each {
+        println "{$it.name}"
+    }
+}
+
 def map = [description: "test_task", group: "klimov"]
 task(map, "hello") {
     println "task: $description"

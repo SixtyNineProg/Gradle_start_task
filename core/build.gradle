@@ -18,3 +18,10 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+gradle.taskGraph.whenReady { TaskExecutionGraph graph ->
+    println "----------- Graph:"
+    graph.allTasks.each {
+        println "{$it.name}"
+    }
+}

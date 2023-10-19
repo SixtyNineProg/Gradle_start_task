@@ -22,16 +22,3 @@ gradle.taskGraph.whenReady { TaskExecutionGraph graph ->
         println "{$it.name}"
     }
 }
-
-tasks.named('test') {
-    useJUnitPlatform()
-}
-
-version = '1.0.0'
-
-tasks.named('jar') {
-    manifest {
-        attributes('Implementation-Title': project.name,
-                'Implementation-Version': project.version)
-    }
-}

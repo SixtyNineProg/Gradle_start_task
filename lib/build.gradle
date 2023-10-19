@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
+}
+
+gradle.taskGraph.whenReady { TaskExecutionGraph graph ->
+    println "----------- Graph:"
+    graph.allTasks.each {
+        println "{$it.name}"
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+version = '1.0.0'
+
+tasks.named('jar') {
+    manifest {
+        attributes('Implementation-Title': project.name,
+                'Implementation-Version': project.version)
+    }
+}

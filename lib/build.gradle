@@ -40,3 +40,33 @@ test {
 jacocoTestReport {
     dependsOn test // tests are required to run before generating the report
 }
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.5
+            }
+        }
+
+        rule {
+            enabled = false
+            element = 'CLASS'
+            includes = ['org.gradle.*']
+
+            limit {
+                counter = 'LINE'
+                value = 'TOTALCOUNT'
+                maximum = 0.3
+            }
+        }
+    }
+}
+
+class GreetingPlugin implements Plugin<Project> {
+    @Override
+    void apply(Project project) {
+        project.task("hello")
+                .doLast(task -> System.out.println("Hello Gradle!"))
+    }
+}

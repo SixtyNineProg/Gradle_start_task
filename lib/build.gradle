@@ -3,6 +3,8 @@ plugins {
     id 'jacoco'
 }
 
+apply from: 'taskHello.gradle'
+
 repositories {
     mavenCentral()
 }
@@ -66,7 +68,10 @@ jacocoTestCoverageVerification {
 class GreetingPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
-        project.task("hello")
-                .doLast(task -> System.out.println("Hello Gradle!"))
+        tasks.register("hello") {
+            doLast {
+                System.out.println("Hello Gradle!")
+            }
+        }
     }
 }

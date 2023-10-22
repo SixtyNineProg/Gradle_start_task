@@ -1,7 +1,23 @@
+import java.time.LocalDate
+
 plugins {
     id 'java'
     id 'jacoco'
 }
+
+ext {
+    javaVersion = 17
+    currentDate = LocalDate.now()
+}
+//println ext.javaVersion
+//println project.javaVersion
+//println project.ext.javaVersion
+println 'java version: ' + javaVersion
+println '-------- All properties:'
+println project.properties
+println '-------- System:'
+println System.getProperty('sys.example')
+//RUN gradle third -D'sys.example'=sysValue1 -PprojectParam1=projectValue1
 
 repositories {
     mavenCentral()
@@ -41,13 +57,13 @@ gradle.taskGraph.whenReady { TaskExecutionGraph graph ->
 }
 
 //Task Graph callback
-gradle.taskGraph.beforeTask { task ->
-    println "before callback first $task"
-}
-
-gradle.taskGraph.afterTask { task ->
-    println "after callback first $task"
-}
+//gradle.taskGraph.beforeTask { task ->
+//    println "before callback first $task"
+//}
+//
+//gradle.taskGraph.afterTask { task ->
+//    println "after callback first $task"
+//}
 
 gradle.taskGraph.whenReady { TaskExecutionGraph taskExecutionGraph ->
     taskExecutionGraph.getAllTasks().each { Task task ->

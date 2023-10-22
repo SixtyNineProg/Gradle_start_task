@@ -5,6 +5,17 @@ plugins {
     id 'jacoco'
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/java']
+        }
+        resources {
+            srcDirs = ['src/resources']
+        }
+    }
+}
+
 ext {
     javaVersion = 17
     currentDate = LocalDate.now()
@@ -13,22 +24,36 @@ ext {
 //println project.javaVersion
 //println project.ext.javaVersion
 println 'java version: ' + javaVersion
-println '-------- All properties:'
-println project.properties
-println '-------- System:'
-println System.getProperty('sys.example')
+//println '-------- All properties:'
+//println project.properties
+//println '-------- System:'
+//println System.getProperty('sys.example')
 //RUN gradle third -D'sys.example'=sysValue1 -PprojectParam1=projectValue1
 
 repositories {
     mavenCentral()
 }
 
-apply from: 'taskHello.gradle'
-apply from: 'taskFirst.gradle'
-apply from: 'taskSecond.gradle'
-apply from: 'taskThird.gradle'
-apply from: 'taskFourth.gradle'
-apply from: 'taskFifth.gradle'
+apply from: 'gradle/taks/taskHello.gradle'
+apply from: 'gradle/taks/taskFirst.gradle'
+apply from: 'gradle/taks/taskSecond.gradle'
+apply from: 'gradle/taks/taskThird.gradle'
+apply from: 'gradle/taks/taskFourth.gradle'
+apply from: 'gradle/taks/taskFifth.gradle'
+
+apply plugin: GreetingPlugin
+
+class GreetingPlugin implements Plugin<Project> {
+    @Override
+    void apply(Project project) {
+        def map = [desctiption: "Greeting task", group: "klimov", type: DefaultTask]
+        project.tasks.register("greeting") {
+            doLast {
+                System.out.println("Hello Gradle!")
+            }
+        }
+    }
+}
 
 second.dependsOn(first)
 
@@ -127,14 +152,3 @@ jacocoTestCoverageVerification {
         }
     }
 }
-//
-//class GreetingPlugin implements Plugin<Project> {
-//    @Override
-//    void apply(Project project) {
-//        tasks.register("hello") {
-//            doLast {
-//                System.out.println("Hello Gradle!")
-//            }
-//        }
-//    }
-//}

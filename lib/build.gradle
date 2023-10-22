@@ -3,6 +3,10 @@ plugins {
     id 'jacoco'
 }
 
+repositories {
+    mavenCentral()
+}
+
 apply from: 'taskHello.gradle'
 apply from: 'taskFirst.gradle'
 apply from: 'taskSecond.gradle'
@@ -29,16 +33,35 @@ third.shouldRunAfter(fourth)
 
 second.finalizedBy(third)
 
-repositories {
-    mavenCentral()
-}
-
 gradle.taskGraph.whenReady { TaskExecutionGraph graph ->
     println "----------- Graph:"
     graph.allTasks.each {
         println "{$it.name}"
     }
 }
+
+//Task Graph callback
+gradle.taskGraph.beforeTask { task ->
+    println "before callback first $task"
+}
+
+gradle.taskGraph.afterTask { task ->
+    println "after callback first $task"
+}
+
+gradle.taskGraph.whenReady { TaskExecutionGraph taskExecutionGraph ->
+    taskExecutionGraph.getAllTasks().each { Task task ->
+        task.doFirst {
+            println "before callback second $task"
+        }
+
+        task.doLast {
+            println "after callback second $task"
+        }
+    }
+}
+
+defaultTasks 'first'
 
 tasks.named('test') {
     useJUnitPlatform()

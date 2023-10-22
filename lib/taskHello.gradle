@@ -1,9 +1,10 @@
-tasks.register('hello') {
+tasks.register('hello', DefaultTask) {
     description = "Hello Task"
     group = "klimov"
     doFirst {
         System.out.println("Hello Gradle!")
         System.out.println("Description: ${description}")
         System.out.println("Group: ${group}")
+        System.out.println("TaskType: ${it.class.simpleName}")
     }
 }

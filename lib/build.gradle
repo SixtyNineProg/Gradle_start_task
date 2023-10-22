@@ -4,15 +4,33 @@ plugins {
 }
 
 apply from: 'taskHello.gradle'
+apply from: 'taskFirst.gradle'
+apply from: 'taskSecond.gradle'
+apply from: 'taskThird.gradle'
+apply from: 'taskFourth.gradle'
+apply from: 'taskFifth.gradle'
+
+second.dependsOn(first)
+
+// In Gradle, mustRunAfter and shouldRunAfter are both used to specify the order of execution of tasks.
+// However, they differ in their strictness of ordering.
+//
+// When you use the mustRunAfter ordering rule, you specify that taskB must always run after taskA,
+// whenever both taskA and taskB will be run. This is expressed as taskB.mustRunAfter(taskA).
+//
+// On the other hand, the shouldRunAfter ordering rule is similar but less strict as it will be ignored in two situations.
+// Firstly, if using that rule introduces an ordering cycle. Secondly, when using parallel execution and all
+// dependencies of a task have been satisfied apart from the shouldRunAfter task, then this task will be run
+// regardless of whether its shouldRunAfter dependencies have been run or not.
+// You should use shouldRunAfter where the ordering is helpful but not strictly required.
+// Command: gradle third fourth
+third.mustRunAfter(fourth)
+third.shouldRunAfter(fourth)
+
+second.finalizedBy(third)
 
 repositories {
     mavenCentral()
-}
-
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
 }
 
 gradle.taskGraph.whenReady { TaskExecutionGraph graph ->
@@ -33,6 +51,12 @@ tasks.named('jar') {
         attributes('Implementation-Title': project.name,
                 'Implementation-Version': project.version)
     }
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
 }
 
 test {
@@ -64,14 +88,14 @@ jacocoTestCoverageVerification {
         }
     }
 }
-
-class GreetingPlugin implements Plugin<Project> {
-    @Override
-    void apply(Project project) {
-        tasks.register("hello") {
-            doLast {
-                System.out.println("Hello Gradle!")
-            }
-        }
-    }
-}
+//
+//class GreetingPlugin implements Plugin<Project> {
+//    @Override
+//    void apply(Project project) {
+//        tasks.register("hello") {
+//            doLast {
+//                System.out.println("Hello Gradle!")
+//            }
+//        }
+//    }
+//}

@@ -1,0 +1,7 @@
+tasks.register('second', DefaultTask) {
+    description = "Task second"
+    group = "klimov"
+    doFirst {
+        println("Task second")
+    }
+}

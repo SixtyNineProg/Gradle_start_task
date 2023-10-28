@@ -1,0 +1,6 @@
+rootProject.name = 'Gradle_start_task'
+include('lib')
+include 'lib'
+include 'core'
+include 'api'
+
